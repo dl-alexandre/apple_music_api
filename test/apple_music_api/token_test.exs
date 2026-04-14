@@ -1,0 +1,58 @@
+defmodule AppleMusicAPI.TokenTest do
+  use ExUnit.Case, async: true
+
+  alias AppleMusicAPI.{Token, TestKey}
+
+  setup do
+    %{pem: TestKey.pem()}
+  end
+
+  test "generate_jwt/1 signs an ES256 JWT with required header and claims", %{pem: pem} do
+    {:ok, jwt} =
+      Token.generate_jwt(
+        team_id: "TEAM123",
+        key_id: "KEY456",
+        private_key: pem,
+        token_ttl_seconds: 120
+      )
+
+    [header_b64, payload_b64, _sig] = String.split(jwt, ".")
+    header = header_b64 |> Base.url_decode64!(padding: false) |> Jason.decode!()
+    payload = payload_b64 |> Base.url_decode64!(padding: false) |> Jason.decode!()
+
+    assert header["alg"] == "ES256"
+    assert header["kid"] == "KEY456"
+    assert header["typ"] == "JWT"
+
+    assert payload["iss"] == "TEAM123"
+    assert is_integer(payload["iat"])
+    assert payload["exp"] - payload["iat"] == 120
+  end
+
+  test "generate_jwt/1 reports missing team_id", %{pem: pem} do
+    assert {:error, {:missing_config, :team_id}} =
+             Token.generate_jwt(key_id: "K", private_key: pem)
+  end
+
+  test "generate_jwt/1 reports missing key_id", %{pem: pem} do
+    assert {:error, {:missing_config, :key_id}} =
+             Token.generate_jwt(team_id: "T", private_key: pem)
+  end
+
+  test "access_token/1 returns JWT as token (no exchange needed)" do
+    bypass = Bypass.open()
+
+    opts = [
+      team_id: "T",
+      key_id: "K",
+      private_key: TestKey.pem(),
+      base_url: "http://localhost:#{bypass.port}"
+    ]
+
+    {:ok, token} = Token.access_token(opts)
+
+    # For Apple Music, the JWT is the access token (no exchange)
+    assert is_binary(token)
+    assert String.split(token, ".") |> length() == 3
+  end
+end
