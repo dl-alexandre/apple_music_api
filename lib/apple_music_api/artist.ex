@@ -72,6 +72,9 @@ defmodule AppleMusicAPI.Artist do
   defp get_nested(nil, _), do: nil
   defp get_nested(data, keys), do: get_nested(data, keys, nil)
   defp get_nested(data, [], default), do: data || default
-  defp get_nested(data, [key | rest], default) when is_map(data), do: get_nested(data[key], rest, default)
+
+  defp get_nested(data, [key | rest], default) when is_map(data),
+    do: get_nested(data[key], rest, default)
+
   defp get_nested(_, _, default), do: default
 end
