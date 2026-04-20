@@ -109,7 +109,6 @@ defmodule AppleMusicAPI.Album do
   defp extract_artwork_url(%{"url" => url}), do: url
   defp extract_artwork_url(_), do: nil
 
-  defp get_nested(nil, _), do: nil
   defp get_nested(data, keys), do: get_nested(data, keys, nil)
   defp get_nested(data, [], default), do: data || default
 
