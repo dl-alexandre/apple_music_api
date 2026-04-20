@@ -26,7 +26,7 @@ defmodule AppleMusicAPI do
   Every function also accepts per-call `opts` that override the application config.
   """
 
-  alias AppleMusicAPI.{Album, Artist, Client, Playlist, Song, Token}
+  alias AppleMusicAPI.{Client, Token}
 
   @type opts :: keyword()
   @type response :: {:ok, map()} | {:error, term()}

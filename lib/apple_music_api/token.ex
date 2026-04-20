@@ -7,7 +7,7 @@ defmodule AppleMusicAPI.Token do
   contains the team ID and key ID.
   """
 
-  alias AppleMusicAPI.{Config, Error}
+  alias AppleMusicAPI.Config
 
   @type jwt :: String.t()
 
