@@ -1,7 +1,7 @@
 defmodule AppleMusicAPI.TokenCacheTest do
   use ExUnit.Case
 
-  alias AppleMusicAPI.{TokenCache, TestKey}
+  alias AppleMusicAPI.{TestKey, TokenCache}
 
   setup do
     # Ensure the cache is cleared before each test

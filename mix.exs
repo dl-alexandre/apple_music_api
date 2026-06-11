@@ -1,7 +1,7 @@
 defmodule AppleMusicAPI.MixProject do
   use Mix.Project
 
-  @version "0.2.0"
+  @version "0.3.0"
   @source_url "https://github.com/dl-alexandre/apple_music_api"
 
   def project do
@@ -34,7 +34,9 @@ defmodule AppleMusicAPI.MixProject do
       {:req, "~> 0.5"},
       {:jose, "~> 1.11"},
       {:bypass, "~> 2.1", only: :test},
-      {:ex_doc, "~> 0.34", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -46,7 +48,7 @@ defmodule AppleMusicAPI.MixProject do
     [
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url},
-      files: ~w(lib mix.exs README.md)
+      files: ~w(lib mix.exs README.md CHANGELOG.md LICENSE)
     ]
   end
 

@@ -36,7 +36,8 @@ defmodule AppleMusicAPI.Token do
         {_, compact} = JOSE.JWT.sign(jwk, header, claims) |> JOSE.JWS.compact()
         {:ok, compact}
       rescue
-        e -> {:error, {:token_generation_failed, Exception.message(e)}}
+        e in [ArgumentError, ErlangError, File.Error, MatchError] ->
+          {:error, {:token_generation_failed, Exception.message(e)}}
       end
     end
   end

@@ -9,7 +9,7 @@ Add to your `mix.exs`:
 ```elixir
 defp deps do
   [
-    {:apple_music_api, "~> 0.1.0"}
+    {:apple_music_api, "~> 0.3.0"}
   ]
 end
 ```
